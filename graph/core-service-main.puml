@@ -1,0 +1,16 @@
+@startuml
+|main.go|
+start
+:core.start();
+
+|#AntiqueWhite|application.go|
+:NewAPP();
+:a.GracefulMonitor();
+:setupRequestHandler();
+:a.Start();
+
+
+|main.go|
+#AAAAAA:ending of the process;
+
+@enduml

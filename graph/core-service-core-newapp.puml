@@ -1,0 +1,26 @@
+@startuml
+|#AntiqueWhite|application.go|
+start
+:NewAPP();
+
+|http_service.go|
+:version.Init();
+
+partition config {
+    :config.ParseServiceConfig();
+    :config.ParseLocales();
+    :config.ParseIPDatabase();
+    :config.Conf.Core.GEO.Init();
+}
+
+:slog.Init();
+:sensitivewords.InitSensitiveWords();
+:global.SetMapData();
+:eventlogclient.InitEventLogClient();
+:producer.InitDefaultSyncProducer();
+:metrics.RegistForCore();
+
+|#AntiqueWhite|application.go|
+#AAAAAA:return app;
+
+@enduml

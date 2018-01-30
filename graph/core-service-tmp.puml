@@ -1,0 +1,49 @@
+@startuml
+|a|
+start
+:hello;
+:this is defined 'aaa';
+|#AntiqueWhite|c|
+if (a) then (yes)
+    -[#blue]->
+    :do yes;
+else (no)
+    :process only;
+endif
+partition repeat {
+    repeat
+        :do sth repeat;
+    repeat while(condition is true)
+}
+note left
+//一段代码//
+====
+*测试
+====
+*test
+*baaa
+end note
+|a|
+#AAAAAA:ending of the process;
+
+|b|
+if (a) then (yes)
+    :aaaa;
+    end
+elseif (b) then (yes)
+    :bbbb;
+    end
+elseif (c) then (yes)
+    :cccc;
+    end
+endif
+
+|a|
+fork
+    :aaaa;
+fork again
+    :bbbb;
+end fork
+
+stop
+@enduml
