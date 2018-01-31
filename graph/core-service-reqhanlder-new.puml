@@ -1,0 +1,24 @@
+@startuml
+|#AntiqueWhite|application.go|
+start
+:database.NewPostgreAdapter();
+:initDbCache();
+:event.NewManager();
+:store.NewLocator();
+:handler.RegisterAll(eh, storeLocator);
+
+|requesthandler.go|
+:service.NewRequestHandler();
+
+|#CCCCCC|detail|
+:adapter.NewLocator;
+:Init requestHandler.resourceHandlers;
+:requestHandler.eventManager = eventManager;
+:requestHandler.cacheClient;
+
+|requesthandler.go|
+:return requestHandler;
+
+|application.go|
+#AAAAAA:handler;
+@enduml

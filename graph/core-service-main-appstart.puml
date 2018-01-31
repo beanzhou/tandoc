@@ -1,0 +1,25 @@
+@startuml
+|#AntiqueWhite|application.go|
+start
+:app.start();
+:handler := setupRequestHandler();
+
+|http_service.go|
+fork
+    :serveDebugDomainSocket();
+fork again
+    :signal.Notify;
+fork again
+    :http.NewServeMux();
+    :
+    Handle("/debug/")
+    Handle("/debug/metrics")
+    Handle("/debug/config")
+    Handle("/", handler)
+    ;
+end fork
+
+|#AntiqueWhite|application.go|
+#AAAAAA:Serve;
+
+@enduml

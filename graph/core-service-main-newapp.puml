@@ -21,6 +21,7 @@ partition config {
 :metrics.RegistForCore();
 
 |#AntiqueWhite|application.go|
-#AAAAAA:return app;
-
+#AAAAAA:return app{
+    server
+};
 @enduml
