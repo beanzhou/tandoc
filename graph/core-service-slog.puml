@@ -1,0 +1,61 @@
+@startuml
+start
+partition Init{
+:go:init;
+note left
+Config{
+    Output: []string{"syslog", "stderr"},
+    Syslog: SyslogConfig{
+        Protocol:      "",
+        Address:       "",
+        Facility:      "local5",
+        Tag:           path.Base(os.Args[0]),
+        NewLineEscape: "\\n",
+    },
+}
+end note
+
+:init config;
+note right
+配置文件读取
+====
+"Log": {
+    "Output": [
+        "syslog"
+    ],
+    "Syslog": {
+      "Address": "127.0.0.1:514",
+      "Facility": "local6",
+      "Protocol": "udp"
+    }
+  },
+end note
+
+if (hasOutput("syslog")) then (yes)
+    :syslogWriter = syslog.Dial();
+endif
+}
+
+fork
+:Warning;
+fork again
+:Debug;
+fork again
+:Info;
+fork again
+:Err;
+fork again
+:...;
+end fork
+
+:logf;
+if (hasOutput("syslog")) then (yes)
+    :syslogWriter.Log...;
+else if (hasOutput("stderr")) then (yes)
+    :os.Stderr.WriteString;
+endif
+
+
+
+stop
+@enduml

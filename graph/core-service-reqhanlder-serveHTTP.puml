@@ -1,0 +1,71 @@
+@startuml
+|#AntiqueWhite|requesthandler.go|
+start
+:handler.serveHTTP();
+
+|#CCCCCC|servehttp|
+:NewRequest();
+
+|#CCCCCC|request|
+partition parse {
+    :parseHeaders;
+    :parseHeaders;
+    :parseQuery;
+}
+
+|servehttp|
+partition AUTH {
+    if (request.AuthType == "MAC") then (yes)
+        :IsClientOSSecretVersionMismatch;
+        :IsAppVersionSecretVersionMismatch;
+    endif
+
+    #HotPink:util.MagicUserIDForAntispam;
+    note left
+    这是个什么魔术ID？？
+    end note
+
+    :IsClientSupported;
+}
+
+if (request.UserId == "") then (yes)
+    :FindByToken;
+endif
+
+:
+Get shardUsers
+request.User
+request.OtherUser
+;
+if (*resource.Id == "me") then (yes)
+    :id := request.UserId
+     resource.Id = &id;
+endif
+
+:UpdateLastActivityAndLocation;
+
+#HotPink:
+h = resourceHandler
+from self.resourceHandlers
+;
+
+if ('GET') then (yes)
+    :h.Get(r);
+elseif ('PUT') then (yes)
+    :h.Put(r);
+elseif ('POST') then (yes)
+    :h.Post(r);
+elseif ('PATCH') then (yes)
+    :h.Patch(r);
+elseif ('DELETE') then (yes)
+    :h.Delete(r);
+endif
+
+:fillEnvelope;
+:respondWith;
+:eventManager.Publish;
+
+|requesthandler.go|
+#AAAAAA:handler;
+
+@enduml
