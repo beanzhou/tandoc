@@ -1,0 +1,10 @@
+@startuml
+setupRequestHandler -> database: NewPostgreAdapter()
+database --> setupRequestHandler: postgreAdapter
+
+setupRequestHandler -> store: NewLocator(postgreAdapter)
+store --> setupRequestHandler: storeLocator
+
+setupRequestHandler -> service: NewRequestHandler(storeLocator)
+
+@enduml

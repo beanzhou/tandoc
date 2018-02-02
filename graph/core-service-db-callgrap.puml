@@ -1,0 +1,15 @@
+@startuml
+|request|
+start
+:Handler;
+
+|storeLocator|
+:UserStore;
+
+|postgresAdapter|
+:UserPostgresAdapter;
+
+|dbManager|
+:DBManager.Query();
+stop
+@enduml
