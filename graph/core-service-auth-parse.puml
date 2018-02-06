@@ -1,0 +1,31 @@
+@startuml
+|auth|
+start
+:parseHeaders;
+:ParseAuthMac;
+:ParseAuthBearerAccessToken;
+|parseAuthHeader|
+#ff1122:parseAuthHeader(AuthTypeBearer);
+note right
+str := strings.TrimSpace(header.Get("**Authorization**"))
+arr := strings.SplitN(str, " ", 2)
+for k, v := range arr {
+    arr[k] = strings.TrimSpace(v)
+}
+if len(arr) == 2 && arr[0] == name {
+    val = arr[1]
+}
+end note
+
+|auth|
+:parseAuthMacHeader;
+
+|parseAuthHeader|
+#1111:parseAuthHeader(AuthTypeMac);
+:use version generate **MacHeader**;
+
+|auth|
+:return macheader;
+
+stop
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+start
+:allowedTimeDiff;
+:IsClientOSSecretVersionMismatch;
+:IsAppVersionSecretVersionMismatch;
+if (version in ["1", "2", "3", "4"]) then (yes)
+    :hmac.New(sha1.New, secret);
+    :hmac.Equal();
+    :checkHMACHiddenInfoForiOS;
+elseif (version in ["5", "6", "7", "8"]) then (yes)
+    :md5Sum := md5.Sum();
+    :sha1Sum := sha1.Sum();
+    :hmac.Equal();
+    :checkHMACHiddenInfoForiOS;
+elseif (version in ["9", "10"]) then (yes)
+    :sha256Sum := sha256.Sum256();
+    :sha1Sum := sha1.Sum();
+    :hmac.Equal();
+endif
+
+stop
+@enduml

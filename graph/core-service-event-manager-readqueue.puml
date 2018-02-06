@@ -1,0 +1,13 @@
+@startuml
+start
+while (eventQueue has data)
+  :read event;
+  repeat
+    #FF6666:server.StartRoutine();
+    :handler.handle(event);
+    #FF6666:server.FinishRoutine();
+  repeat while(has handler)
+endwhile
+
+stop
+@enduml

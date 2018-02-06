@@ -1,0 +1,31 @@
+@startuml
+|setupRequestHandler|
+start
+:event.NewManger(1000, gm);
+|#99CCFF|event|
+fork
+:Manager{
+    eventQueue:     make(chan *Event, queueSize),
+    gracefulServer: gracefulServer,
+    handlers:       []Handler{},
+ };
+:prometheus.MustRegister;
+fork again
+while (true)
+    :eh.readQueue();
+end while
+end
+end fork
+
+
+|setupRequestHandler|
+:handler.RegisterAll(eh, storehandler);
+
+|#336699|handler|
+:eh.Register(NewPushEventHandler);
+:eh.Register(NewSmsEventHandler);
+:...;
+
+|setupRequestHandler|
+stop
+@enduml

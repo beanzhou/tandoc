@@ -1,0 +1,46 @@
+@startuml
+
+
+node haproxy_1
+note right
+第一层 HAProxy
+tantan Gateway
+end note
+
+node nginx
+note right
+LUA
+...
+反向代理
+鉴权
+限频
+end note
+node haproxy_2
+note right
+负载
+end note
+cloud core_service
+cloud push_service
+cloud others...
+
+
+database user
+database chat
+database moment
+
+haproxy_1 --> nginx
+nginx --> haproxy_2
+
+haproxy_2 --> core_service
+haproxy_2 --> push_service
+haproxy_2 --> others...
+
+core_service --> i
+push_service --> i
+others... --> i
+
+i --> user
+i --> chat
+i --> moment
+
+@enduml
