@@ -8,7 +8,7 @@ start
 
 |#CCCCCC|request|
 partition parse {
-    :parseHeaders;
+    :parseResource;
     :parseHeaders;
     :parseQuery;
 }

@@ -16,31 +16,64 @@ LUA
 限频
 end note
 node haproxy_2
-note right
-负载
-end note
+
 cloud core_service
-cloud push_service
+cloud account_service
 cloud others...
 
+node ha
+cloud uss
+cloud sms
+cloud push
 
 database user
 database chat
 database moment
+database db...
+
+node ab
+
+node pic
+cloud aws
+node s3
+
+cloud cdn
+
+pic --> aws
+aws --> s3
+s3 --> cdn
+cdn --> s3
 
 haproxy_1 --> nginx
 nginx --> haproxy_2
+nginx --> ab
 
 haproxy_2 --> core_service
-haproxy_2 --> push_service
+haproxy_2 --> account_service
 haproxy_2 --> others...
 
+core_service --> ha
+account_service --> ha
+others... --> ha
+
+ha --> uss
+ha --> sms
+ha --> push
+
 core_service --> i
-push_service --> i
+account_service --> i
 others... --> i
+
+
+
+uss --> i
+sms --> i
+push --> i
 
 i --> user
 i --> chat
 i --> moment
+i --> db...
+
 
 @enduml

@@ -1,0 +1,45 @@
+@startuml
+|serveHTTP|
+start
+|RelationshipHandler|
+:Put();
+:external.Relationship;
+if (IsSuperLikeSwipe) then (yes)
+    partition handleSuperLikeSwipe {
+        :GetSuperLikeRemaining;
+        :adapter.Relationship.Upsert;
+    }
+elseif (IsUndo) then (yes)
+    partition handleUndoSwipe {
+        :GetUndoRemaining;
+        :adapter.Relationship.Upsert;
+    }
+elseif (IsScenarioSwipe) then (yes)
+    partition handleScenarioSwipe {
+        :adapter.Relationship.ScenarioUpsert;
+        :...;
+    }
+else
+    partition store.Relationship.Upsert {
+        partition pg.Relationship.Upsert {
+            :storeLocator.Relationship.Upsert;
+            :postgreAdapter.Relationship.Upsert;
+            #FF6666:upsertRelationshipQuery;
+            #FF6666:upsertOtherRelationshipQuery;
+        }
+        :if superlike then upsert;
+        :if matched then handleMatch;
+        :if UserBlocked then handleUserblocked;
+        :publish Event;
+    }
+
+
+
+endif
+
+|serveHTTP|
+:fillEnvelope;
+:respondWith;
+:eventManager.Publish;
+:return;
+@enduml

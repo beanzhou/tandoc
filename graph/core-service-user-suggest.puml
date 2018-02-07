@@ -1,0 +1,41 @@
+@startuml
+|serveHTTP|
+start
+|UserHandler|
+:Get();
+:getSearchParameter;
+:validate;
+partition getCollection {
+    if (searchSuggested) then (yes)
+        :male limit check;
+        partition getRecommendationUsers{
+            :config.Conf.Core.RecommendationUrl
+            or abTestURL;
+            :httpGetRecommendationUsers;
+        }
+    elseif (searchScenarioSuggested) then (yes)
+        :db User.FindForScenario;
+        :...;
+    elseif (searchMergedSuggested) then (yes)
+        if (request.Parameters.Filter == "") then (yes)
+            :getRecommendationUsers;
+        else
+            :User.FindForMerged;
+            :selectScenarioSuggestedUserIds;
+        endif
+    elseif (searchSuperLikeRelationship) then (yes)
+        :...;
+    else
+        :return err;
+    endif
+
+     :getSuperLikeByIds();
+     :envelope.Data.Relationships;
+}
+
+|serveHTTP|
+:fillEnvelope;
+:respondWith;
+:eventManager.Publish;
+:return;
+@enduml
