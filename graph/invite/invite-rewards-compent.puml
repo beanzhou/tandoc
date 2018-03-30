@@ -1,0 +1,29 @@
+@startuml
+node Browser
+node Client
+
+node H5WebService
+node RestfulService
+
+node InviteService
+
+node WithdrawJob
+node SyncUserInfoJob
+
+database User
+database Account
+database Invite
+
+'-------------------------'
+
+Browser --> H5WebService:http
+Client ..> RestfulService:http
+
+H5WebService --> InviteService:grpc
+RestfulService ..> InviteService:grpc
+InviteService --> User
+InviteService --> Account
+InviteService --> Invite
+
+
+@enduml

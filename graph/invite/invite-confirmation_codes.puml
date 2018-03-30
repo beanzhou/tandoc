@@ -1,0 +1,27 @@
+@startuml
+|send|
+start
+:CheckRate(countryCode, Mobile);
+:NewCode;
+:SaveCode;
+:SendCode;
+stop
+|verify|
+start
+:FindCode(countryCode, Mobile);
+:Verify Code;
+note right
+验证包括：
+*验证码错误
+*过期时间
+*最大重试次数
+end note
+if () then  (yes)
+    :update verify time;
+else (no)
+    :return err;
+endif
+stop
+
+
+@enduml

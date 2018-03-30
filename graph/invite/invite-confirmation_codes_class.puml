@@ -1,0 +1,31 @@
+@startuml
+
+interface ConfirmationCodesModel {
+    Count()
+    GetLatest()
+    Insert()
+    IncreaseRetryTimes()
+    Verify()
+    Expire()
+}
+
+interface SMSServerInterace {
+    Send()
+}
+
+class ConfirmationCodes {
+    - ConfirmationCodesModel model
+    - SMSServerInterace smsServer
+    ==
+    + SendCode(code, mobile)
+    + Verify(code, mobile)
+    --
+    - newCode()
+    - checkRateLimit()
+    - validateAction()
+    - expire()
+}
+
+ConfirmationCodes *-- ConfirmationCodesModel
+ConfirmationCodes *-- SMSServerInterace
+@enduml
