@@ -1,0 +1,24 @@
+@startuml
+start
+:verify;
+note left
+参数：WeChat code
+返回：
+access_token、refresh_token、openid
+wechat user info
+
+end note
+if (userexist) then (200)
+    :access_token;
+    note left
+    参数：access_token、openid
+    end note
+else (400)
+    :signup;
+    note right
+    参数：access_token、openid
+    end note
+endif
+
+end
+@enduml
